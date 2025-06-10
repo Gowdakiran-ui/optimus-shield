@@ -1,0 +1,44 @@
+import chromadb
+from chromadb.config import Settings
+from sentence_transformers import SentenceTransformer
+
+# Initialize Chroma client (local persistence)
+client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory="./chroma_db"))
+
+# Create (or get) a collection named 'threat_logs'
+collection = client.get_or_create_collection(name="threat_logs")
+
+# Load a sentence transformer for embeddings (you can use any other model too)
+embedder = SentenceTransformer('all-MiniLM-L6-v2')  # lightweight and fast
+
+# Example logs from OTX + synthetic logs
+logs = [
+    "[2025-06-09 14:00:32] Failed password for root from 192.168.1.10 (Brute Force)",
+    "[2025-06-09 14:05:10] Port scan detected from 192.168.1.23",
+    "[2025-06-09 14:07:45] Connection attempt from 10.0.0.15",
+    "[2025-06-09 14:10:00] Possible DDoS attack detected"
+]
+
+# Generate embeddings for each log entry
+embeddings = embedder.encode(logs).tolist()
+
+# Prepare metadata (optional, useful for retrieval filtering)
+metadatas = [
+    {"threat_type": "Brute Force", "source_ip": "192.168.1.10"},
+    {"threat_type": "Port Scan", "source_ip": "192.168.1.23"},
+    {"threat_type": "Connection Attempt", "source_ip": "10.0.0.15"},
+    {"threat_type": "DDoS", "source_ip": None}
+]
+
+# Add documents to Chroma collection
+collection.add(
+    documents=logs,
+    embeddings=embeddings,
+    metadatas=metadatas,
+    ids=[f"log_{i}" for i in range(len(logs))]
+)
+
+# Persist the database
+client.persist()
+
+print("Chroma Vector DB created and logs added successfully.")

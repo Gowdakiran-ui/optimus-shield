@@ -1,0 +1,7 @@
+# sample apache or system logs here
+Failed password for root from 192.168.1.10
+Port scan detected from 192.168.1.23
+Accepted password for user from 127.0.0.1
+Connection attempt from 10.0.0.15
+Possible DDoS attack detected
+
