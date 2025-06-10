@@ -12,7 +12,7 @@ COLLECTION_NAME = "threat_logs"
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Your Gemini API Key
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or "AIzaSyDeBfugF9ecGWcgaI204vhd2PCKyU4kclQ"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or "get_api key"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY
 
 def ask_with_rag(query):
