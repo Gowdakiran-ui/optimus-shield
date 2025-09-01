@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-genai.configure(api_key="ge_your_apikey")
+genai.configure(api_key="enter_your_apikey")
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
@@ -12,3 +12,4 @@ def generate_answer(context, query):
 # Usage
 answer = generate_answer("India's capital is New Delhi.", "What is the capital of India?")
 print(answer)
+
